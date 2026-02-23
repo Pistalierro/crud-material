@@ -8,7 +8,7 @@ import {routes} from './app.routes';
 import {initializeApp} from 'firebase/app';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyD5Tk4IFP2RfYDRLK7szQqndZcorM82M-k',
+  apiKey: 'AIzaSyBLL5qqcWT8xFvbi2NYfxQhSUyonj13yzI',
   authDomain: 'crud-material-d7289.firebaseapp.com',
   projectId: 'crud-material-d7289',
   storageBucket: 'crud-material-d7289.firebasestorage.app',
