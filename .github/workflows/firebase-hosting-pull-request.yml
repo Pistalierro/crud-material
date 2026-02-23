@@ -23,6 +23,15 @@ jobs:
         with:
           node-version: 20
           cache: npm
+      - name: Write firebase web config
+        env:
+          FIREBASE_WEB_CONFIG_JSON: ${{ secrets.FIREBASE_WEB_CONFIG_JSON }}
+        run: |
+          cat > src/environments/firebase.config.local.ts <<'TS'
+          export const firebaseConfig = __FIREBASE_WEB_CONFIG_JSON__;
+          TS
+          sed -i.bak "s|__FIREBASE_WEB_CONFIG_JSON__|$FIREBASE_WEB_CONFIG_JSON|" src/environments/firebase.config.local.ts
+          rm -f src/environments/firebase.config.local.ts.bak
       - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -39,6 +48,15 @@ jobs:
         with:
           node-version: 20
           cache: npm
+      - name: Write firebase web config
+        env:
+          FIREBASE_WEB_CONFIG_JSON: ${{ secrets.FIREBASE_WEB_CONFIG_JSON }}
+        run: |
+          cat > src/environments/firebase.config.local.ts <<'TS'
+          export const firebaseConfig = __FIREBASE_WEB_CONFIG_JSON__;
+          TS
+          sed -i.bak "s|__FIREBASE_WEB_CONFIG_JSON__|$FIREBASE_WEB_CONFIG_JSON|" src/environments/firebase.config.local.ts
+          rm -f src/environments/firebase.config.local.ts.bak
       - run: npm ci
       - run: npm run build
       - name: Deploy Hosting + Firestore
