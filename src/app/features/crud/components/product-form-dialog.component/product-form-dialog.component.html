@@ -2,50 +2,60 @@
 
 <div matDialogContent>
 
-  <mat-form-field appearance="outline" class="product-name-field">
-    <mat-label>Наименование товара</mat-label>
-    <input matInput required/>
-  </mat-form-field>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
 
-  <mat-form-field appearance="outline">
-    <mat-label>Категория товара</mat-label>
-    <mat-select placeholder="Выберите категорию товара">
-      @for (category of categories; track category.value) {
-        <mat-option [value]="category.value">{{ category.label }}</mat-option>
+    <mat-form-field appearance="outline" class="product-name-field">
+      <mat-label>Наименование товара</mat-label>
+      <input formControlName="name" matInput/>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Категория товара</mat-label>
+      <mat-select formControlName="category" placeholder="Выберите категорию товара">
+        @for (category of categories; track category.value) {
+          <mat-option [value]="category.value">{{ category.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Выберите дату:</mat-label>
+      <input [matDatepicker]="picker" formControlName="startDate" matInput>
+      <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <label id="example-radio-group-label">
+      <h3>Состояние товара:</h3>
+    </label>
+    <mat-radio-group
+      aria-labelledby="example-radio-group-label"
+      formControlName="condition">
+      @for (condition of productConditions; track condition) {
+        <mat-radio-button class="example-radio-button" [value]="condition">{{ condition }}</mat-radio-button>
       }
-    </mat-select>
-  </mat-form-field>
+    </mat-radio-group>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Выберите дату:</mat-label>
-    <input [matDatepicker]="picker" matInput>
-    <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Цена, ₴</mat-label>
+      <input formControlName="price" matInput required type="number"/>
+    </mat-form-field>
 
-  <label id="example-radio-group-label">
-    <h3>Состояние товара:</h3>
-  </label>
-  <mat-radio-group
-    aria-labelledby="example-radio-group-label">
-    @for (condition of productConditions; track condition) {
-      <mat-radio-button class="example-radio-button" [value]="condition">{{ condition }}</mat-radio-button>
-    }
-  </mat-radio-group>
+    <mat-form-field appearance="outline">
+      <mat-label>Дополнительно</mat-label>
+      <textarea
+        cdkAutosizeMaxRows="5"
+        cdkAutosizeMinRows="1"
+        cdkTextareaAutosize
+        formControlName="description"
+        matInput
+        placeholder="Описание товара..."
+      ></textarea>
+    </mat-form-field>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Цена, ₴</mat-label>
-    <input matInput required type="number"/>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Дополнительно</mat-label>
-    <textarea
-      cdkAutosizeMaxRows="5"
-      cdkAutosizeMinRows="1"
-      cdkTextareaAutosize
-      matInput
-      placeholder="Описание товара..."
-    ></textarea>
-  </mat-form-field>
+    <mat-dialog-actions align="end">
+      <button mat-dialog-close matButton="elevated">Отменить</button>
+      <button [disabled]="form.invalid" class="save-btn" matButton="filled" type="submit">Сохранить</button>
+    </mat-dialog-actions>
+  </form>
 </div>
