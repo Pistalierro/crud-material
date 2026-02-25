@@ -1,13 +1,27 @@
-<mat-toolbar>
-  <button aria-label="Example icon-button with menu icon" class="example-icon" matIconButton>
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>My App</span>
-  <span class="example-spacer"></span>
-  <button aria-label="Example icon-button with heart icon" class="example-icon favorite-icon" matIconButton>
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button aria-label="Example icon-button with share icon" class="example-icon" matIconButton>
-    <mat-icon>share</mat-icon>
+<mat-toolbar class="hero-toolbar" color="primary">
+  <div class="hero-left">
+    <div class="hero-title">ElectroCatalog</div>
+    <div class="hero-subtitle">Демо-каталог электроники на Angular Material</div>
+  </div>
+
+  <span class="spacer"></span>
+
+  <button (click)="openDialog()" color="accent" mat-flat-button type="button">
+    <mat-icon>add</mat-icon>
+    Добавить товар
   </button>
 </mat-toolbar>
+
+
+<section class="content-shell">
+  <mat-card class="content-card">
+    <div class="content-header">
+      <h2>Каталог товаров</h2>
+    </div>
+
+    <div class="placeholder">
+      <mat-icon>inventory_2</mat-icon>
+      <span>Товары появятся здесь после подключения Firestore и формы сохранения</span>
+    </div>
+  </mat-card>
+</section>

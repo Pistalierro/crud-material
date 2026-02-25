@@ -1,0 +1,135 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at 10% -20%, rgb(33 150 243 / 18%), transparent 40%),
+    radial-gradient(circle at 100% 0%, rgb(0 188 212 / 16%), transparent 35%),
+    #f3f6fb;
+}
+
+.hero-toolbar {
+  height: 80px;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 18%);
+}
+
+.hero-left {
+  display: grid;
+  gap: 2px;
+}
+
+.hero-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.hero-subtitle {
+  font-size: 13px;
+  opacity: 0.92;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.hero-stats {
+  margin: 20px auto 0;
+  max-width: 1200px;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  border-radius: 16px;
+  padding: 16px 18px;
+  background: linear-gradient(145deg, #ffffff, #f6f9ff);
+}
+
+.stat-value {
+  margin-top: 6px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #173f7a;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #6b7a90;
+}
+
+.stat-hint {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #516178;
+}
+
+.content-shell {
+  margin: 16px auto 0;
+  max-width: 1200px;
+  padding: 0 24px 24px;
+}
+
+.content-card {
+  min-height: 400px;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 86%);
+  backdrop-filter: blur(8px);
+}
+
+.content-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.content-header p {
+  margin: 8px 0 0;
+  color: #55657d;
+}
+
+.placeholder {
+  margin-top: 28px;
+  min-height: 260px;
+  border: 2px dashed #c8d3e6;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: #5d6d83;
+  text-align: center;
+  padding: 16px;
+}
+
+.placeholder mat-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+  color: #386eb7;
+}
+
+@media (max-width: 900px) {
+  .hero-toolbar {
+    height: auto;
+    min-height: 80px;
+    padding: 12px 16px;
+  }
+
+  .hero-title {
+    font-size: 20px;
+  }
+
+  .hero-stats {
+    grid-template-columns: 1fr;
+  }
+}
