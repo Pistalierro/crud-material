@@ -42,7 +42,7 @@ export class ProductFormDialogComponent {
   readonly form = this.fb.group({
     name: this.fb.nonNullable.control('', Validators.required),
     category: this.fb.nonNullable.control<ProductCategory>(PRODUCT_CATEGORIES[0].value, Validators.required),
-    startDate: this.fb.control<Date | null>(null),
+    startDate: this.fb.nonNullable.control(new Date(), Validators.required),
     condition: this.fb.control<ProductConditionsType | null>(null, Validators.required),
     price: this.fb.nonNullable.control(0, Validators.required),
     description: this.fb.nonNullable.control('', Validators.required),
@@ -57,6 +57,8 @@ export class ProductFormDialogComponent {
     const payload: CreateProductDto = {
       name: this.form.controls.name.value,
       category: this.form.controls.category.value,
+      condition: this.form.controls.condition.value!,
+      startDate: this.form.controls.startDate.value,
       price: this.form.controls.price.value,
       description: this.form.controls.description.value,
     };

@@ -19,9 +19,54 @@
       <h2>Каталог товаров</h2>
     </div>
 
-    <div class="placeholder">
-      <mat-icon>inventory_2</mat-icon>
-      <span>Товары появятся здесь после подключения Firestore и формы сохранения</span>
+    <mat-form-field>
+      <mat-label>Filter</mat-label>
+      <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
+    </mat-form-field>
+
+    <div class="mat-elevation-z8">
+      <table [dataSource]="dataSource" mat-table matSort>
+        <ng-container matColumnDef="name">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Название</th>
+          <td *matCellDef="let product" mat-cell>{{ product.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="category">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Категория</th>
+          <td *matCellDef="let product" mat-cell>{{ product.category }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="condition">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Состояние</th>
+          <td *matCellDef="let product" mat-cell>{{ product.condition }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Дата</th>
+          <td *matCellDef="let product" mat-cell>{{ product.startDate | date:'dd.MM.yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Цена</th>
+          <td *matCellDef="let product" mat-cell>{{ product.price }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Описание</th>
+          <td *matCellDef="let product" mat-cell>{{ product.description }}</td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let product; columns: displayedColumns" mat-row></tr>
+
+        <tr *matNoDataRow class="mat-row">
+          <td class="mat-cell" colspan="6">No data matching the filter "{{ input.value }}"</td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
     </div>
+
+
   </mat-card>
 </section>

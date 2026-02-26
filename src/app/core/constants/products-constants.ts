@@ -1,3 +1,5 @@
+import {Product} from '../models/product.model';
+
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number]['value'];
 export const PRODUCT_CATEGORIES = [
   {value: 'computers', label: 'Компьютеры'},
@@ -11,4 +13,13 @@ export const PRODUCT_CATEGORIES = [
 
 export type ProductConditionsType = 'Новый' | 'Б/у' | 'После ремонта'
 export const PRODUCT_CONDITIONS: ProductConditionsType[] = ['Новый', 'Б/у', 'После ремонта'];
+
+export const PRODUCT_TABLE_COLUMNS: Array<keyof Product> = [
+  'name',
+  'category',
+  'condition',
+  'startDate',
+  'price',
+  'description',
+];
 
