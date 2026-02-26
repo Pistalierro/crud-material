@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, effect, inject, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, effect, inject, signal, ViewChild} from '@angular/core';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -45,6 +45,7 @@ export class CrudPageComponent implements AfterViewInit {
   readonly displayedColumns = PRODUCT_TABLE_COLUMNS;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  readonly isSaving = signal(false);
   private readonly snackBar = inject(MatSnackBar);
   private readonly productsFirestoreService = inject(ProductsFirestoreService);
   readonly products = toSignal(this.productsFirestoreService.getProducts(), {initialValue: []});
@@ -89,6 +90,12 @@ export class CrudPageComponent implements AfterViewInit {
   }
 
   private async handleDialogPayload(payload: CreateProductDto): Promise<void> {
+    if (this.isSaving()) {
+      return;
+    }
+
+    this.isSaving.set(true);
+
     try {
       const createdId = await this.productsFirestoreService.addProduct(payload);
       console.log('Product created with id:', createdId);
@@ -106,7 +113,8 @@ export class CrudPageComponent implements AfterViewInit {
         horizontalPosition: 'end',
         verticalPosition: 'top',
       });
+    } finally {
+      this.isSaving.set(false);
     }
   }
-
 }

@@ -6,7 +6,7 @@
 
   <span class="spacer"></span>
 
-  <button (click)="openDialog()" color="accent" mat-flat-button type="button">
+  <button (click)="openDialog()" [disabled]="isSaving()" mat-flat-button type="button">
     <mat-icon>add</mat-icon>
     Добавить товар
   </button>
