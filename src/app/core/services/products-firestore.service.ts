@@ -1,6 +1,6 @@
 import {EnvironmentInjector, inject, Injectable, runInInjectionContext} from '@angular/core';
-import {addDoc, collection, collectionData, Firestore} from '@angular/fire/firestore';
-import {CreateProductDto} from '../models/product-dto.model';
+import {addDoc, collection, collectionData, deleteDoc, doc, Firestore, updateDoc} from '@angular/fire/firestore';
+import {CreateProductDto, UpdateProductDto} from '../models/product-dto.model';
 import {Product} from '../models/product.model';
 import {map, Observable} from 'rxjs';
 import {Timestamp} from 'firebase/firestore';
@@ -36,6 +36,20 @@ export class ProductsFirestoreService {
           };
         }))
       );
+    });
+  }
+
+  deleteProduct(id: string): Promise<void> {
+    return runInInjectionContext(this.injector, () => {
+      const productDocRef = doc(this.firestore, this.collectionName, id);
+      return deleteDoc(productDocRef);
+    });
+  }
+
+  updateProduct(id: string, dto: UpdateProductDto): Promise<void> {
+    return runInInjectionContext(this.injector, () => {
+      const productDocRef = doc(this.firestore, this.collectionName, id);
+      return updateDoc(productDocRef, dto);
     });
   }
 }

@@ -1,10 +1,9 @@
 :host {
   display: block;
   min-height: 100dvh;
-  background:
-    radial-gradient(circle at 10% -20%, rgb(33 150 243 / 18%), transparent 40%),
-    radial-gradient(circle at 100% 0%, rgb(0 188 212 / 16%), transparent 35%),
-    #f3f6fb;
+  background: radial-gradient(circle at 10% -20%, rgb(33 150 243 / 18%), transparent 40%),
+  radial-gradient(circle at 100% 0%, rgb(0 188 212 / 16%), transparent 35%),
+  #f3f6fb;
 }
 
 .hero-toolbar {
@@ -111,11 +110,21 @@
   padding: 16px;
 }
 
+.delete-btn {
+  color: #d32f2f;
+}
+
 .placeholder mat-icon {
   width: 32px;
   height: 32px;
   font-size: 32px;
   color: #386eb7;
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 @media (max-width: 900px) {

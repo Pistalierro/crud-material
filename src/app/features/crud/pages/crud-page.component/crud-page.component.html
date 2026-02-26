@@ -56,11 +56,36 @@
           <td *matCellDef="let product" mat-cell>{{ product.description }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef mat-header-cell>Действия</th>
+          <td *matCellDef="let product" mat-cell>
+            <div class="actions-cell">
+              <button
+                (click)="onEdit(product)"
+                aria-label="Редактировать товар"
+                mat-icon-button
+                type="button"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                (click)="onDelete(product)"
+                aria-label="Удалить товар"
+                class="delete-btn"
+                mat-icon-button
+                type="button"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
         <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
         <tr *matRowDef="let product; columns: displayedColumns" mat-row></tr>
 
         <tr *matNoDataRow class="mat-row">
-          <td class="mat-cell" colspan="6">No data matching the filter "{{ input.value }}"</td>
+          <td class="mat-cell" colspan="7">No data matching the filter "{{ input.value }}"</td>
         </tr>
       </table>
 

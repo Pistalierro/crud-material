@@ -3,9 +3,13 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import {ProductFormDialogComponent} from '../../components/product-form-dialog.component/product-form-dialog.component';
+import {
+  ProductFormDialogComponent,
+  ProductFormDialogData,
+  ProductFormDialogResult
+} from '../../components/product-form-dialog.component/product-form-dialog.component';
 import {MatCardModule} from '@angular/material/card';
-import {CreateProductDto} from '../../../../core/models/product-dto.model';
+import {CreateProductDto, UpdateProductDto} from '../../../../core/models/product-dto.model';
 import {ProductsFirestoreService} from '../../../../core/services/products-firestore.service';
 import {Product} from '../../../../core/models/product.model';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
@@ -62,7 +66,7 @@ export class CrudPageComponent implements AfterViewInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open<ProductFormDialogComponent, void, CreateProductDto>(
+    const dialogRef = this.dialog.open<ProductFormDialogComponent, void, ProductFormDialogResult>(
       ProductFormDialogComponent,
       {
         panelClass: 'products-dialog-panel',
@@ -72,13 +76,20 @@ export class CrudPageComponent implements AfterViewInit {
       },
     );
 
-    dialogRef.afterClosed().subscribe((payload: CreateProductDto | undefined) => {
-      if (!payload) {
+    dialogRef.afterClosed().subscribe((result: ProductFormDialogResult | undefined) => {
+      if (!result) {
         return;
       }
-      void this.handleDialogPayload(payload);
+
+      if (result.mode === 'create') {
+        void this.handleCreate(result.payload);
+        return;
+      }
+
+      void this.handleUpdate(result.id, result.payload);
     });
   }
+
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -89,7 +100,68 @@ export class CrudPageComponent implements AfterViewInit {
     }
   }
 
-  private async handleDialogPayload(payload: CreateProductDto): Promise<void> {
+  onEdit(product: Product): void {
+    const dialogRef = this.dialog.open<ProductFormDialogComponent, ProductFormDialogData, ProductFormDialogResult>(
+      ProductFormDialogComponent,
+      {
+        panelClass: 'products-dialog-panel',
+        width: '30%',
+        maxWidth: '95vw',
+        autoFocus: false,
+        data: {product},
+      },
+    );
+
+    dialogRef.afterClosed().subscribe((result: ProductFormDialogResult | undefined) => {
+      if (!result || result.mode !== 'edit') {
+        return;
+      }
+
+      void this.handleUpdate(result.id, result.payload);
+    });
+  }
+
+  async onDelete(product: Product): Promise<void> {
+    try {
+      await this.productsFirestoreService.deleteProduct(product.id);
+      this.snackBar.open('Товар удалён', 'OK', {
+        duration: 2500,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      });
+    } catch (error) {
+      console.error('Failed to delete product:', error);
+
+      this.snackBar.open('Не удалось удалить товар. Попробуй снова.', 'OK', {
+        duration: 3500,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      });
+    }
+  }
+
+  private async handleUpdate(id: string, payload: UpdateProductDto): Promise<void> {
+    try {
+      await this.productsFirestoreService.updateProduct(id, payload);
+
+      this.snackBar.open('Товар обновлён', 'OK', {
+        duration: 2500,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      });
+    } catch (error) {
+      console.error('Failed to update product:', error);
+
+      this.snackBar.open('Не удалось обновить товар. Попробуй снова.', 'OK', {
+        duration: 3500,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      });
+    }
+  }
+
+
+  private async handleCreate(payload: CreateProductDto): Promise<void> {
     if (this.isSaving()) {
       return;
     }
@@ -117,4 +189,5 @@ export class CrudPageComponent implements AfterViewInit {
       this.isSaving.set(false);
     }
   }
+
 }

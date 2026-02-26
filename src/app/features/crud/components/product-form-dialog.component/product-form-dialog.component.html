@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Форма добавления товара</h1>
+<h2 mat-dialog-title>{{ isEditMode ? 'Редактировать товар' : 'Добавить товар' }}</h2>
 
 <div matDialogContent>
 
@@ -55,7 +55,7 @@
 
     <mat-dialog-actions align="end">
       <button mat-dialog-close matButton="elevated">Отменить</button>
-      <button [disabled]="form.invalid" class="save-btn" matButton="filled" type="submit">Сохранить</button>
+      <button [disabled]="form.invalid" class="save-btn" matButton="filled" type="submit">{{ submitButtonLabel }}</button>
     </mat-dialog-actions>
   </form>
 </div>

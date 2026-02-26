@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -13,7 +13,17 @@ import {
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatButtonModule} from '@angular/material/button';
-import {CreateProductDto} from '../../../../core/models/product-dto.model';
+import {CreateProductDto, UpdateProductDto} from '../../../../core/models/product-dto.model';
+import {Product} from '../../../../core/models/product.model';
+
+export interface ProductFormDialogData {
+  product: Product;
+}
+
+export type ProductFormDialogResult =
+  | { mode: 'create'; payload: CreateProductDto }
+  | { mode: 'edit'; id: string; payload: UpdateProductDto };
+
 
 @Component({
   selector: 'app-product-form-dialog',
@@ -37,7 +47,10 @@ export class ProductFormDialogComponent {
 
   readonly categories = PRODUCT_CATEGORIES;
   readonly productConditions: ProductConditionsType[] = PRODUCT_CONDITIONS;
-  private readonly dialogRef = inject(MatDialogRef<ProductFormDialogComponent>);
+  readonly dialogData = inject<ProductFormDialogData | null>(MAT_DIALOG_DATA, {optional: true});
+  readonly isEditMode = !!this.dialogData?.product;
+  readonly submitButtonLabel = this.isEditMode ? 'Обновить' : 'Сохранить';
+  private readonly dialogRef = inject(MatDialogRef<ProductFormDialogComponent, ProductFormDialogResult>);
   private readonly fb = inject(FormBuilder);
   readonly form = this.fb.group({
     name: this.fb.nonNullable.control('', Validators.required),
@@ -48,13 +61,30 @@ export class ProductFormDialogComponent {
     description: this.fb.nonNullable.control('', Validators.required),
   });
 
+  constructor() {
+    const product = this.dialogData?.product;
+    if (!product) {
+      return;
+    }
+
+    this.form.patchValue({
+      name: product.name,
+      category: product.category,
+      condition: product.condition,
+      startDate: product.startDate,
+      price: product.price,
+      description: product.description,
+    });
+  }
+
+
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    const payload: CreateProductDto = {
+    const payload: UpdateProductDto = {
       name: this.form.controls.name.value,
       category: this.form.controls.category.value,
       condition: this.form.controls.condition.value!,
@@ -63,6 +93,20 @@ export class ProductFormDialogComponent {
       description: this.form.controls.description.value,
     };
 
-    this.dialogRef.close(payload);
+    const product = this.dialogData?.product;
+    if (product) {
+      this.dialogRef.close({
+        mode: 'edit',
+        id: product.id,
+        payload,
+      });
+      return;
+    }
+
+    this.dialogRef.close({
+      mode: 'create',
+      payload: payload as CreateProductDto,
+    });
   }
+
 }

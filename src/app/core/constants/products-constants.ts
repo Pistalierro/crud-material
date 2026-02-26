@@ -14,12 +14,13 @@ export const PRODUCT_CATEGORIES = [
 export type ProductConditionsType = 'Новый' | 'Б/у' | 'После ремонта'
 export const PRODUCT_CONDITIONS: ProductConditionsType[] = ['Новый', 'Б/у', 'После ремонта'];
 
-export const PRODUCT_TABLE_COLUMNS: Array<keyof Product> = [
+export const PRODUCT_TABLE_COLUMNS: Array<keyof Product | 'actions'> = [
   'name',
   'category',
   'condition',
   'startDate',
   'price',
   'description',
+  'actions'
 ];
 
