@@ -20,6 +20,8 @@ import {
   DeleteConfirmDialogComponent,
   DeleteConfirmDialogData
 } from '../../components/delete-confirm-dialog.component/delete-confirm-dialog.component';
+import {catchError, finalize, of} from 'rxjs';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-crud-page',
@@ -30,6 +32,7 @@ import {
     MatCardModule,
     MatDialogModule,
     MatSnackBarModule,
+    MatProgressBarModule,
     ProductsTableComponent
   ],
   templateUrl: './crud-page.component.html',
@@ -40,9 +43,21 @@ export class CrudPageComponent {
   readonly dialog = inject(MatDialog);
   readonly displayedColumns = PRODUCT_TABLE_COLUMNS;
   readonly isSaving = signal(false);
+  readonly isLoading = signal(false);
+  readonly loadError = signal<string | null>(null);
   private readonly snackBar = inject(MatSnackBar);
   private readonly productsFirestoreService = inject(ProductsFirestoreService);
-  readonly products = toSignal(this.productsFirestoreService.getProducts(), {initialValue: []});
+  readonly products = toSignal(
+    this.productsFirestoreService.getProducts().pipe(
+      catchError((error) => {
+        console.error('Failed to load products:', error);
+        this.loadError.set('Не удалось загрузить товары.');
+        return of([]);
+      }),
+      finalize(() => this.isLoading.set(false)),
+    ),
+    {initialValue: []},
+  );
 
   openDialog(): void {
     const dialogRef = this.openProductDialog();

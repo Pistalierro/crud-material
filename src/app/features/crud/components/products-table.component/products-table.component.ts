@@ -10,6 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {CurrencyPipe, DatePipe} from '@angular/common';
 import {PRODUCT_CATEGORY_LABEL_MAP, ProductCategory} from '../../../../core/constants/products-constants';
 import {LengthPipe} from '../../../../shared/pipes/length-pipe';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-products-table',
@@ -23,7 +24,8 @@ import {LengthPipe} from '../../../../shared/pipes/length-pipe';
     MatButtonModule,
     DatePipe,
     CurrencyPipe,
-    LengthPipe
+    LengthPipe,
+    ReactiveFormsModule
   ],
   templateUrl: './products-table.component.html',
   styleUrl: './products-table.component.scss',
@@ -32,6 +34,7 @@ export class ProductsTableComponent implements AfterViewInit {
 
   readonly categoryLabelMap = PRODUCT_CATEGORY_LABEL_MAP;
   readonly dataSource = new MatTableDataSource<Product>([]);
+  readonly filterControl = new FormControl('', {nonNullable: true});
   @Input({required: true}) displayedColumns: Array<keyof Product | 'actions'> = [];
   @Output() edit = new EventEmitter<Product>();
   @Output() delete = new EventEmitter<Product>();
@@ -46,6 +49,12 @@ export class ProductsTableComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.filterControl.valueChanges.subscribe((value: string) => {
+      this.dataSource.filter = value.trim().toLowerCase();
+
+      if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
+    });
   }
 
   onEdit(product: Product): void {
@@ -54,15 +63,6 @@ export class ProductsTableComponent implements AfterViewInit {
 
   onDelete(product: Product): void {
     this.delete.emit(product);
-  }
-
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 
   getCategoryLabel(category: ProductCategory): string {

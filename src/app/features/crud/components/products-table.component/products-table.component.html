@@ -1,7 +1,7 @@
 <mat-form-field class="table-filter" subscriptSizing="dynamic">
   <mat-label>Фильтр</mat-label>
   <mat-icon matSuffix>search</mat-icon>
-  <input #input (keyup)="applyFilter($event)" matInput placeholder="Поиск по товарам">
+  <input [formControl]="filterControl" matInput placeholder="Поиск по товарам">
 </mat-form-field>
 
 <div class="mat-elevation-z8">
@@ -37,7 +37,7 @@
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <th *matHeaderCellDef mat-header-cell>Действия</th>
+      <th *matHeaderCellDef mat-header-cell>Управление</th>
       <td *matCellDef="let product" mat-cell>
         <div class="actions-cell">
           <button
@@ -66,7 +66,7 @@
     <tr *matRowDef="let product; columns: displayedColumns" mat-row></tr>
 
     <tr *matNoDataRow class="mat-row">
-      <td class="mat-cell" colspan="7">Нет данных по фильтру "{{ input.value }}"</td>
+      <td class="mat-cell" colspan="7">Нет данных по фильтру "{{ filterControl.value }}"</td>
     </tr>
   </table>
 

@@ -19,12 +19,17 @@
       <h2>Каталог товаров</h2>
     </div>
 
-    <app-products-table
-      (delete)="onDelete($event)"
-      (edit)="onEdit($event)"
-      [displayedColumns]="displayedColumns"
-      [products]="products()"
-    ></app-products-table>
-
+    @if (isLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    } @else if (loadError()) {
+      <div class="load-error">{{ loadError() }}</div>
+    } @else {
+      <app-products-table
+        (delete)="onDelete($event)"
+        (edit)="onEdit($event)"
+        [displayedColumns]="displayedColumns"
+        [products]="products()"
+      ></app-products-table>
+    }
   </mat-card>
 </section>
