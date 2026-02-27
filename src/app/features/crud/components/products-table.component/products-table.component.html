@@ -1,74 +1,84 @@
-<mat-form-field class="table-filter" subscriptSizing="dynamic">
-  <mat-label>Фильтр</mat-label>
-  <mat-icon matSuffix>search</mat-icon>
-  <input [formControl]="filterControl" matInput placeholder="Поиск по товарам">
-</mat-form-field>
+<div class="products-table">
+  <mat-form-field class="products-table__filter" subscriptSizing="dynamic">
+    <mat-label>Фильтр</mat-label>
+    <mat-icon matSuffix>search</mat-icon>
+    <input [formControl]="filterControl" matInput placeholder="Поиск по товарам">
+  </mat-form-field>
 
-<div class="mat-elevation-z8">
-  <table [dataSource]="dataSource" mat-table matSort>
-    <ng-container matColumnDef="name">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Название</th>
-      <td *matCellDef="let product" mat-cell>{{ product.name }}</td>
-    </ng-container>
+  <div class="products-table__surface mat-elevation-z8">
+    <div class="products-table__scroll">
+      <table [dataSource]="dataSource" class="products-table__table" mat-table matSort>
+        <ng-container matColumnDef="name">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Название</th>
+          <td *matCellDef="let product" mat-cell>{{ product.name }}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="category">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Категория</th>
-      <td *matCellDef="let product" mat-cell>{{ getCategoryLabel(product.category) }}</td>
-    </ng-container>
+        <ng-container matColumnDef="category">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Категория</th>
+          <td *matCellDef="let product" mat-cell>{{ getCategoryLabel(product.category) }}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="condition">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Состояние</th>
-      <td *matCellDef="let product" mat-cell>{{ product.condition }}</td>
-    </ng-container>
+        <ng-container matColumnDef="condition">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Состояние</th>
+          <td *matCellDef="let product" mat-cell>{{ product.condition }}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="startDate">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Дата</th>
-      <td *matCellDef="let product" mat-cell>{{ product.startDate | date:'dd.MM.yyyy' }}</td>
-    </ng-container>
+        <ng-container matColumnDef="startDate">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Дата</th>
+          <td *matCellDef="let product" mat-cell>{{ product.startDate | date:'dd.MM.yyyy' }}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="price">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Цена</th>
-      <td *matCellDef="let product" mat-cell>{{ product.price | currency:'UAH':'symbol':'1.0-2' }}</td>
-    </ng-container>
+        <ng-container matColumnDef="price">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Цена</th>
+          <td *matCellDef="let product" mat-cell>{{ product.price | currency:'UAH':'symbol':'1.0-2' }}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="description">
-      <th *matHeaderCellDef mat-header-cell mat-sort-header>Описание</th>
-      <td *matCellDef="let product" mat-cell>{{ product.description | length: 60 }}</td>
-    </ng-container>
+        <ng-container matColumnDef="description">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Описание</th>
+          <td *matCellDef="let product" mat-cell>{{ product.description | length: 60 }}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <th *matHeaderCellDef mat-header-cell>Управление</th>
-      <td *matCellDef="let product" mat-cell>
-        <div class="actions-cell">
-          <button
-            (click)="onEdit(product)"
-            aria-label="Редактировать товар"
-            class="btn-edit"
-            mat-icon-button
-            type="button"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            (click)="onDelete(product)"
-            aria-label="Удалить товар"
-            class="btn-delete"
-            mat-icon-button
-            type="button"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </td>
-    </ng-container>
+        <ng-container matColumnDef="actions">
+          <th *matHeaderCellDef class="products-table__actions-header" mat-header-cell>Управление</th>
+          <td *matCellDef="let product" class="products-table__actions-cell" mat-cell>
+            <div class="products-table__actions">
+              <button
+                (click)="onEdit(product)"
+                aria-label="Редактировать товар"
+                class="products-table__action-btn products-table__action-btn--edit"
+                mat-icon-button
+                type="button"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                (click)="onDelete(product)"
+                aria-label="Удалить товар"
+                class="products-table__action-btn products-table__action-btn--delete"
+                mat-icon-button
+                type="button"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
 
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let product; columns: displayedColumns" mat-row></tr>
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let product; columns: displayedColumns" mat-row></tr>
 
-    <tr *matNoDataRow class="mat-row">
-      <td class="mat-cell" colspan="7">Нет данных по фильтру "{{ filterControl.value }}"</td>
-    </tr>
-  </table>
+        <tr *matNoDataRow class="mat-row">
+          <td class="mat-cell products-table__no-data" colspan="7">
+            Нет данных по фильтру "{{ filterControl.value }}"
+          </td>
+        </tr>
+      </table>
+    </div>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Пагинация товаров"></mat-paginator>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      aria-label="Пагинация товаров"
+      class="products-table__paginator"
+    ></mat-paginator>
+  </div>
 </div>

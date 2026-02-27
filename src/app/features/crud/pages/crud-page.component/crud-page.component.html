@@ -1,28 +1,33 @@
-<mat-toolbar class="hero-toolbar" color="primary">
-  <div class="hero-left">
-    <div class="hero-title">ElectroCatalog</div>
-    <div class="hero-subtitle">Демо-каталог электроники на Angular Material</div>
+<mat-toolbar class="crud-page__toolbar">
+  <div class="crud-page__brand">
+    <div class="crud-page__title">ElectroCatalog</div>
   </div>
 
-  <span class="spacer"></span>
+  <span class="crud-page__spacer"></span>
 
-  <button (click)="openDialog()" [disabled]="isSaving()" mat-flat-button type="button">
+  <button
+    (click)="openDialog()"
+    [disabled]="isSaving()"
+    class="crud-page__action-btn"
+    matButton
+    type="button"
+  >
     <mat-icon>add</mat-icon>
     Добавить товар
   </button>
 </mat-toolbar>
 
 
-<section class="content-shell">
-  <mat-card class="content-card">
-    <div class="content-header">
+<section class="crud-page__content">
+  <mat-card class="crud-page__card">
+    <div class="crud-page__header">
       <h2>Каталог товаров</h2>
     </div>
 
     @if (isLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     } @else if (loadError()) {
-      <div class="load-error">{{ loadError() }}</div>
+      <div class="crud-page__error">{{ loadError() }}</div>
     } @else {
       <app-products-table
         (delete)="onDelete($event)"

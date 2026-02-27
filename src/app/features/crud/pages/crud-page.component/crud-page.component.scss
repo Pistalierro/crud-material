@@ -1,3 +1,5 @@
+@use "../../../../../styles/mixins/mixins-media" as *;
+
 :host {
   display: block;
   min-height: 100dvh;
@@ -6,138 +8,147 @@
   #f3f6fb;
 }
 
-.hero-toolbar {
-  height: 80px;
-  padding: 0 24px;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  box-shadow: 0 6px 20px rgb(0 0 0 / 18%);
-}
-
-.hero-left {
-  display: grid;
-  gap: 2px;
-}
-
-.hero-title {
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-}
-
-.hero-subtitle {
-  font-size: 13px;
-  opacity: 0.92;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-
-.hero-stats {
-  margin: 20px auto 0;
-  max-width: 1200px;
-  padding: 0 24px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.stat-card {
-  border-radius: 16px;
-  padding: 16px 18px;
-  background: linear-gradient(145deg, #ffffff, #f6f9ff);
-}
-
-.stat-value {
-  margin-top: 6px;
-  font-size: 24px;
-  font-weight: 700;
-  color: #173f7a;
-}
-
-.stat-label {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  color: #6b7a90;
-}
-
-.stat-hint {
-  margin-top: 8px;
-  font-size: 13px;
-  color: #516178;
-}
-
-.content-shell {
-  margin: 16px auto 0;
-  max-width: 1200px;
-  padding: 0 24px 24px;
-}
-
-.content-card {
-  min-height: 400px;
-  padding: 20px;
-  border-radius: 16px;
-  background: rgb(255 255 255 / 86%);
-  backdrop-filter: blur(8px);
-}
-
-.content-header h2 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.content-header p {
-  margin: 8px 0 0;
-  color: #55657d;
-}
-
-.placeholder {
-  margin-top: 28px;
-  min-height: 260px;
-  border: 2px dashed #c8d3e6;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
-  color: #5d6d83;
-  text-align: center;
-  padding: 16px;
-}
-
-.delete-btn {
-  color: #d32f2f;
-}
-
-.placeholder mat-icon {
-  width: 32px;
-  height: 32px;
-  font-size: 32px;
-  color: #386eb7;
-}
-
-.load-error {
-  color: #b3261e;
-  padding: 16px 0;
-}
-
-@media (max-width: 900px) {
-  .hero-toolbar {
-    height: auto;
-    min-height: 80px;
-    padding: 12px 16px;
+.crud-page {
+  &__toolbar {
+    position: sticky;
+    top: 0;
+    margin-bottom: 40px;
+    z-index: 20;
+    height: 76px;
+    padding: 0 20px;
+    gap: 12px;
+    color: #fff;
+    background: linear-gradient(130deg, rgb(11 58 112 / 88%), rgb(20 116 177 / 82%));
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgb(255 255 255 / 24%);
+    box-shadow: 0 6px 16px rgb(8 28 54 / 22%);
   }
 
-  .hero-title {
-    font-size: 20px;
+  &__brand {
+    display: grid;
+    gap: 1px;
+    min-width: 0;
   }
 
-  .hero-stats {
-    grid-template-columns: 1fr;
+  &__title {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.2px;
+    text-wrap: balance;
+  }
+
+  &__spacer {
+    flex: 1 1 auto;
+  }
+
+  &__action-btn {
+    min-height: 40px;
+    padding-inline: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff !important;
+    flex-shrink: 0;
+    background: rgb(255 255 255 / 14%) !important;
+
+    &:hover {
+      background: rgb(255 255 255 / 22%) !important;
+    }
+
+    mat-icon {
+      color: #fff;
+    }
+  }
+
+  &__content {
+    margin: 10px auto 0;
+    max-width: 1200px;
+    padding: 0 24px 24px;
+  }
+
+  &__card {
+    min-height: 400px;
+    padding: 20px;
+    border-radius: 16px;
+    background: rgb(255 255 255 / 86%);
+    backdrop-filter: blur(8px);
+  }
+
+  &__header {
+    h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+  }
+
+  &__error {
+    color: #b3261e;
+    padding: 16px 0;
+  }
+}
+
+@include lg {
+  .crud-page {
+    &__toolbar {
+      height: auto;
+      min-height: 74px;
+      padding: 10px 14px;
+    }
+
+    &__title {
+      font-size: 20px;
+    }
+
+    &__content {
+      padding: 0 16px 16px;
+    }
+
+    &__card {
+      padding: 16px;
+    }
+  }
+}
+
+@include sm {
+  .crud-page {
+    &__toolbar {
+      align-items: flex-start;
+      flex-wrap: wrap;
+      min-height: 70px;
+    }
+
+    &__spacer {
+      display: none;
+    }
+
+    &__title {
+      font-size: 19px;
+    }
+
+    &__action-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    &__content {
+      padding: 0 12px 12px;
+    }
+
+    &__card {
+      padding: 12px;
+      border-radius: 12px;
+    }
+  }
+}
+
+@include xs {
+  .crud-page {
+    &__toolbar {
+      padding: 10px 12px;
+    }
+
+    &__title {
+      font-size: 18px;
+    }
   }
 }

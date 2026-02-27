@@ -1,21 +1,137 @@
-.table-filter {
-  width: 100%;
-  margin: 12px 0;
-}
+@use "../../../../../styles/mixins/mixins-media" as *;
 
-.actions-cell {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.btn {
-  &-delete {
-    color: #d32f2f;
+.products-table {
+  &__filter {
+    width: 100%;
+    margin: 12px 0;
   }
 
-  &-edit {
-    color: royalblue;
+  &__surface {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  &__scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__table {
+    width: 100%;
+    min-width: 960px;
+
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      padding-inline: 12px;
+    }
+  }
+
+  .mat-column-actions {
+    width: 104px;
+    min-width: 104px;
+    max-width: 104px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__actions-header,
+  &__actions-cell {
+    text-align: right;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+
+  &__action-btn {
+    &.mat-mdc-icon-button {
+      width: 40px;
+      height: 40px;
+      padding: 8px;
+    }
+
+    &--edit {
+      color: royalblue;
+    }
+
+    &--delete {
+      color: #d32f2f;
+    }
+  }
+
+  &__paginator {
+    border-top: 1px solid rgb(0 0 0 / 8%);
+  }
+
+  &__no-data {
+    padding-block: 16px;
   }
 }
 
+@include lg {
+  .products-table {
+    &__table {
+      min-width: 860px;
+
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        padding-inline: 10px;
+      }
+    }
+  }
+}
+
+@include sm {
+  .products-table {
+    &__filter {
+      margin: 8px 0;
+    }
+
+    &__table {
+      min-width: 760px;
+
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        padding-inline: 8px;
+        font-size: 13px;
+      }
+    }
+
+    .mat-column-actions {
+      width: 88px;
+      min-width: 88px;
+      max-width: 88px;
+    }
+
+    &__actions {
+      gap: 2px;
+    }
+
+    &__action-btn {
+      &.mat-mdc-icon-button {
+        width: 36px;
+        height: 36px;
+        padding: 6px;
+      }
+    }
+  }
+}
+
+@include xs {
+  .products-table {
+    &__table {
+      min-width: 680px;
+    }
+
+    .mat-column-actions {
+      width: 80px;
+      min-width: 80px;
+      max-width: 80px;
+    }
+  }
+}

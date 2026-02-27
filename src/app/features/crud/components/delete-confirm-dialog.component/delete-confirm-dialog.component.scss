@@ -1,0 +1,26 @@
+@use "../../../../../styles/mixins/mixins-media" as *;
+
+.delete-dialog {
+  &__content {
+    padding-top: 4px;
+  }
+
+  &__actions {
+    margin: 0;
+    gap: 8px;
+    padding: 8px 0 0;
+  }
+}
+
+@include sm {
+  .delete-dialog {
+    &__actions {
+      flex-direction: column-reverse;
+      align-items: stretch;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

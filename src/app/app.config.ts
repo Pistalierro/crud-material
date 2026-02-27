@@ -3,10 +3,10 @@ import {provideRouter} from '@angular/router';
 import {provideFirebaseApp} from '@angular/fire/app';
 import {getFirestore, provideFirestore} from '@angular/fire/firestore';
 import {initializeApp} from 'firebase/app';
-
 import {firebaseConfig} from '../environments/firebase.config.local';
 import {routes} from './app.routes';
 import {provideNativeDateAdapter} from '@angular/material/core';
+import {getAuth, provideAuth} from '@angular/fire/auth';
 
 
 export const appConfig: ApplicationConfig = {
@@ -16,6 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
     provideNativeDateAdapter(),
     {provide: LOCALE_ID, useValue: 'uk-UA'},
   ],

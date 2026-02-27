@@ -1,7 +1,60 @@
-mat-form-field {
-  width: 100%;
+@use "../../../../../styles/mixins/mixins-media" as *;
+
+.product-dialog {
+  &__content {
+    padding-top: 4px;
+  }
+
+  &__form {
+    display: grid;
+    gap: 12px;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  &__radio-wrap {
+    display: grid;
+    gap: 8px;
+  }
+
+  &__radio-label {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  &__radio-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__actions {
+    margin: 0;
+    padding: 8px 24px 20px;
+    gap: 8px;
+  }
 }
 
-.mat-mdc-radio-button ~ .mat-mdc-radio-button {
-  margin-left: 16px;
+@include sm {
+  .product-dialog {
+    &__content {
+      padding: 0 4px;
+    }
+
+    &__form {
+      gap: 10px;
+    }
+
+    &__actions {
+      padding: 8px 16px 16px;
+      flex-direction: column-reverse;
+      align-items: stretch;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
 }

@@ -73,8 +73,9 @@ export class CrudPageComponent {
     const dialogRef = this.dialog.open<DeleteConfirmDialogComponent, DeleteConfirmDialogData, boolean>(
       DeleteConfirmDialogComponent,
       {
-        width: '400px',
-        maxWidth: '95vw',
+        panelClass: 'delete-dialog-panel',
+        width: 'min(420px, 96vw)',
+        maxWidth: '96vw',
         autoFocus: false,
         data: {productName: product.name},
       },
@@ -137,17 +138,20 @@ export class CrudPageComponent {
     }
   }
 
-  private openProductDialog(data?: ProductFormDialogData)
-    : import('@angular/material/dialog').MatDialogRef<ProductFormDialogComponent, ProductFormDialogResult> {
-
-    return this.dialog.open<ProductFormDialogComponent, ProductFormDialogData | void, ProductFormDialogResult>
-    (ProductFormDialogComponent, {
-      panelClass: 'products-dialog-panel',
-      width: '30%',
-      maxWidth: '95vw',
-      autoFocus: false,
-      data,
-    });
+  private openProductDialog(
+    data?: ProductFormDialogData,
+  ): import('@angular/material/dialog').MatDialogRef<ProductFormDialogComponent, ProductFormDialogResult> {
+    return this.dialog.open<ProductFormDialogComponent, ProductFormDialogData | void, ProductFormDialogResult>(
+      ProductFormDialogComponent,
+      {
+        panelClass: 'products-dialog-panel',
+        width: 'min(760px, 96vw)',
+        maxWidth: '96vw',
+        maxHeight: '92dvh',
+        autoFocus: false,
+        data,
+      },
+    );
   }
 
   private handleDialogResult(result: ProductFormDialogResult | undefined): void {
