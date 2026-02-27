@@ -19,79 +19,12 @@
       <h2>Каталог товаров</h2>
     </div>
 
-    <mat-form-field>
-      <mat-label>Filter</mat-label>
-      <input #input (keyup)="applyFilter($event)" matInput placeholder="Ex. Mia">
-    </mat-form-field>
-
-    <div class="mat-elevation-z8">
-      <table [dataSource]="dataSource" mat-table matSort>
-        <ng-container matColumnDef="name">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Название</th>
-          <td *matCellDef="let product" mat-cell>{{ product.name }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="category">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Категория</th>
-          <td *matCellDef="let product" mat-cell>{{ product.category }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="condition">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Состояние</th>
-          <td *matCellDef="let product" mat-cell>{{ product.condition }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="startDate">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Дата</th>
-          <td *matCellDef="let product" mat-cell>{{ product.startDate | date:'dd.MM.yyyy' }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="price">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Цена</th>
-          <td *matCellDef="let product" mat-cell>{{ product.price }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="description">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Описание</th>
-          <td *matCellDef="let product" mat-cell>{{ product.description }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-          <th *matHeaderCellDef mat-header-cell>Действия</th>
-          <td *matCellDef="let product" mat-cell>
-            <div class="actions-cell">
-              <button
-                (click)="onEdit(product)"
-                aria-label="Редактировать товар"
-                mat-icon-button
-                type="button"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button
-                (click)="onDelete(product)"
-                aria-label="Удалить товар"
-                class="delete-btn"
-                mat-icon-button
-                type="button"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </td>
-        </ng-container>
-
-        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-        <tr *matRowDef="let product; columns: displayedColumns" mat-row></tr>
-
-        <tr *matNoDataRow class="mat-row">
-          <td class="mat-cell" colspan="7">No data matching the filter "{{ input.value }}"</td>
-        </tr>
-      </table>
-
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-    </div>
-
+    <app-products-table
+      (delete)="onDelete($event)"
+      (edit)="onEdit($event)"
+      [displayedColumns]="displayedColumns"
+      [products]="products()"
+    ></app-products-table>
 
   </mat-card>
 </section>

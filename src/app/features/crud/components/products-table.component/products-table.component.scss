@@ -1,0 +1,21 @@
+.table-filter {
+  width: 100%;
+  margin: 12px 0;
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn {
+  &-delete {
+    color: #d32f2f;
+  }
+
+  &-edit {
+    color: royalblue;
+  }
+}
+
