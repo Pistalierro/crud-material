@@ -8,7 +8,7 @@
   &__actions {
     margin: 0;
     gap: 8px;
-    padding: 8px 0 0;
+    padding: 16px 24px 24px;
   }
 }
 
@@ -17,6 +17,7 @@
     &__actions {
       flex-direction: column-reverse;
       align-items: stretch;
+      padding: 16px 24px 24px;
 
       button {
         width: 100%;
