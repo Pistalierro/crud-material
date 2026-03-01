@@ -1,7 +1,6 @@
 @use "../../../../../styles/mixins/mixins-media" as *;
 
 .products-table {
-
   &__filter {
     width: 100%;
     margin: 12px 0 10px;
@@ -45,6 +44,16 @@
   &__table {
     width: 100%;
     min-width: 960px;
+
+    .mat-mdc-header-row {
+      border-bottom: 1px solid rgb(16 24 40 / 12%);
+    }
+
+    .mat-mdc-header-cell {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2b3442;
+    }
 
     .mat-mdc-header-cell,
     .mat-mdc-cell {
@@ -91,6 +100,17 @@
         color: #1c6b46;
         background: rgb(28 107 70 / 12%);
       }
+    }
+  }
+
+  &__price-header,
+  &__price-cell {
+    text-align: right;
+  }
+
+  &__price-header {
+    .mat-sort-header-container {
+      justify-content: flex-end;
     }
   }
 

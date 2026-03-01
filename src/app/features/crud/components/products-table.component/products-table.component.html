@@ -49,8 +49,10 @@
         </ng-container>
 
         <ng-container matColumnDef="price">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Ціна</th>
-          <td *matCellDef="let product" mat-cell>{{ product.price | currency:'UAH':'symbol':'1.0-2' }}</td>
+          <th *matHeaderCellDef class="products-table__price-header" mat-header-cell mat-sort-header>Ціна</th>
+          <td *matCellDef="let product" class="products-table__price-cell" mat-cell>
+            {{ product.price | currency:'UAH':'symbol':'1.0-2' }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="description">
