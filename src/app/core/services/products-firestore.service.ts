@@ -53,21 +53,28 @@ export class ProductsFirestoreService {
       authState(this.auth).pipe(
         switchMap((user) =>
           runInInjectionContext(this.injector, () => {
+            const publicCollection = collection(this.firestore, 'catalogPublic');
+
+            const publicProducts$ = collectionData(publicCollection, {idField: 'id'}).pipe(
+              map((docs) =>
+                docs.map((item) => this.toProductListItem(item, 'public', null)),
+              ),
+            );
+
             if (!user) {
-              return of([] as ProductListItem[]);
+              return combineLatest([publicProducts$, of([] as ProductListItem[])]).pipe(
+                map(([publicProducts, sandboxProducts]) =>
+                  [...publicProducts, ...sandboxProducts].sort(
+                    (a, b) => b.startDate.getTime() - a.startDate.getTime(),
+                  ),
+                ),
+              );
             }
 
             return from(user.getIdTokenResult()).pipe(
               switchMap((tokenResult) =>
                 runInInjectionContext(this.injector, () => {
                   const admin = tokenResult.claims['admin'] === true;
-                  const publicCollection = collection(this.firestore, 'catalogPublic');
-
-                  const publicProducts$ = collectionData(publicCollection, {idField: 'id'}).pipe(
-                    map((docs) =>
-                      docs.map((item) => this.toProductListItem(item, 'public', null)),
-                    ),
-                  );
 
                   const sandboxProducts$ = admin
                     ? collectionSnapshots(
