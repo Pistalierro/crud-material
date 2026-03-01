@@ -5,16 +5,17 @@
     <input [formControl]="filterControl" matInput placeholder="Пошук товарів">
   </mat-form-field>
 
-  <div class="products-table__info">
-    <p class="products-table__info-text">
-      Демо-товари доступні лише для перегляду. Ви можете додавати й редагувати тільки свої sandbox-записи.
+  <div class="products-table__hint">
+    <p class="products-table__hint-line">Демо-товари доступні лише для перегляду.</p>
+    <p class="products-table__hint-line">
+      Ваші sandbox-записи можна створювати, редагувати та видаляти. Вони персональні, видаляються через
+      6 годин. Почніть з кнопки “+ Додати товар”.
     </p>
   </div>
 
   <div class="products-table__surface mat-elevation-z8">
     <div class="products-table__scroll">
       <table [dataSource]="dataSource" class="products-table__table" mat-table matSort>
-
         <ng-container matColumnDef="name">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>Назва</th>
           <td *matCellDef="let product" mat-cell>
@@ -55,7 +56,9 @@
         <ng-container matColumnDef="description">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>Опис</th>
           <td *matCellDef="let product" mat-cell>
-            <span [matTooltip]="product.description" matTooltipPosition="above">{{ product.description | length: 60 }}</span>
+            <span [matTooltip]="product.description" matTooltipPosition="above">
+              {{ product.description | length: 60 }}
+            </span>
           </td>
         </ng-container>
 

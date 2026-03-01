@@ -1,24 +1,34 @@
 @use "../../../../../styles/mixins/mixins-media" as *;
 
 .products-table {
+
   &__filter {
     width: 100%;
-    margin: 12px 0;
+    margin: 12px 0 10px;
+    --mat-form-field-filled-container-shape: 12px;
+
+    .mat-mdc-text-field-wrapper {
+      overflow: hidden;
+    }
   }
 
-  &__info {
+  &__hint {
     margin: 0 0 12px;
     padding: 10px 12px;
     border-radius: 10px;
-    background: rgb(12 94 167 / 8%);
-    border: 1px solid rgb(12 94 167 / 14%);
+    background: rgb(12 94 167 / 7%);
+    border: 1px solid rgb(12 94 167 / 12%);
   }
 
-  &__info-text {
+  &__hint-line {
     margin: 0;
     font-size: 13px;
     line-height: 1.45;
     color: #35506f;
+  }
+
+  &__hint-line + &__hint-line {
+    margin-top: 4px;
   }
 
   &__surface {
@@ -146,15 +156,15 @@
 @include sm {
   .products-table {
     &__filter {
-      margin: 8px 0;
+      margin: 8px 0 8px;
     }
 
-    &__info {
+    &__hint {
       margin-bottom: 8px;
       padding: 8px 10px;
     }
 
-    &__info-text {
+    &__hint-line {
       font-size: 12px;
     }
 
