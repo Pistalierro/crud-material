@@ -1,32 +1,45 @@
 <div class="products-table">
   <mat-form-field class="products-table__filter" subscriptSizing="dynamic">
-    <mat-label>Фильтр</mat-label>
+    <mat-label>Фільтр</mat-label>
     <mat-icon matSuffix>search</mat-icon>
-    <input [formControl]="filterControl" matInput placeholder="Поиск по товарам">
+    <input [formControl]="filterControl" matInput placeholder="Пошук товарів">
   </mat-form-field>
 
   <div class="products-table__info">
     <p class="products-table__info-text">
-      Демо-товары доступны только для просмотра. Вы можете добавлять и редактировать только свои sandbox-записи.
+      Демо-товари доступні лише для перегляду. Ви можете додавати й редагувати тільки свої sandbox-записи.
     </p>
   </div>
 
   <div class="products-table__surface mat-elevation-z8">
     <div class="products-table__scroll">
       <table [dataSource]="dataSource" class="products-table__table" mat-table matSort>
+
         <ng-container matColumnDef="name">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Название</th>
-          <td *matCellDef="let product" mat-cell>{{ product.name }}</td>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Назва</th>
+          <td *matCellDef="let product" mat-cell>
+            <div class="products-table__name-cell">
+              <span
+                [class.products-table__name-badge--public]="product.source === 'public'"
+                [class.products-table__name-badge--sandbox]="product.source === 'sandbox'"
+                class="products-table__name-badge"
+              >
+                {{ getSourceLabel(product.source) }}
+              </span>
+
+              <span class="products-table__name-text">{{ product.name }}</span>
+            </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="category">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Категория</th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Категорія</th>
           <td *matCellDef="let product" mat-cell>{{ getCategoryLabel(product.category) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="condition">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Состояние</th>
-          <td *matCellDef="let product" mat-cell>{{ product.condition }}</td>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Стан</th>
+          <td *matCellDef="let product" mat-cell>{{ getConditionLabel(product.condition) }}</td>
         </ng-container>
 
         <ng-container matColumnDef="startDate">
@@ -35,23 +48,25 @@
         </ng-container>
 
         <ng-container matColumnDef="price">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Цена</th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Ціна</th>
           <td *matCellDef="let product" mat-cell>{{ product.price | currency:'UAH':'symbol':'1.0-2' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="description">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Описание</th>
-          <td *matCellDef="let product" mat-cell>{{ product.description | length: 60 }}</td>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Опис</th>
+          <td *matCellDef="let product" mat-cell>
+            <span [matTooltip]="product.description" matTooltipPosition="above">{{ product.description | length: 60 }}</span>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th *matHeaderCellDef class="products-table__actions-header" mat-header-cell>Управление</th>
+          <th *matHeaderCellDef class="products-table__actions-header" mat-header-cell>Керування</th>
           <td *matCellDef="let product" class="products-table__actions-cell" mat-cell>
             <div class="products-table__actions">
               <button
                 (click)="onEdit(product)"
                 [disabled]="!canManage(product)"
-                aria-label="Редактировать товар"
+                aria-label="Редагувати товар"
                 class="products-table__action-btn products-table__action-btn--edit"
                 mat-icon-button
                 type="button"
@@ -62,7 +77,7 @@
               <button
                 (click)="onDelete(product)"
                 [disabled]="!canManage(product)"
-                aria-label="Удалить товар"
+                aria-label="Видалити товар"
                 class="products-table__action-btn products-table__action-btn--delete"
                 mat-icon-button
                 type="button"
@@ -78,7 +93,7 @@
 
         <tr *matNoDataRow class="mat-row">
           <td class="mat-cell products-table__no-data" colspan="7">
-            Нет данных по фильтру "{{ filterControl.value }}"
+            Немає даних за фільтром "{{ filterControl.value }}"
           </td>
         </tr>
       </table>
@@ -87,7 +102,7 @@
     <mat-paginator
       [pageSizeOptions]="[5, 10, 25, 100]"
       [pageSize]="10"
-      aria-label="Пагинация товаров"
+      aria-label="Пагінація товарів"
       class="products-table__paginator"
     ></mat-paginator>
   </div>

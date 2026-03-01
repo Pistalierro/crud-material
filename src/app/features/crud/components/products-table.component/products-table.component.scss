@@ -42,6 +42,48 @@
     }
   }
 
+  &__name {
+    &-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    &-text {
+      min-width: 0;
+      font-weight: 700;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    &-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      min-width: 54px;
+      height: 20px;
+      padding: 0 7px;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+
+      &--public {
+        color: #2f5d9a;
+        background: rgb(47 93 154 / 12%);
+      }
+
+      &--sandbox {
+        color: #1c6b46;
+        background: rgb(28 107 70 / 12%);
+      }
+    }
+  }
+
   .mat-column-actions {
     width: 104px;
     min-width: 104px;
@@ -123,6 +165,19 @@
       .mat-mdc-cell {
         padding-inline: 8px;
         font-size: 13px;
+      }
+    }
+
+    &__name {
+      &-cell {
+        gap: 8px;
+      }
+
+      &-badge {
+        min-width: 50px;
+        height: 18px;
+        padding: 0 6px;
+        font-size: 8px;
       }
     }
 

@@ -8,9 +8,15 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {CurrencyPipe, DatePipe} from '@angular/common';
-import {PRODUCT_CATEGORY_LABEL_MAP, ProductCategory} from '../../../../core/constants/products-constants';
+import {
+  PRODUCT_CATEGORY_LABEL_MAP,
+  PRODUCT_CONDITION_LABEL_MAP,
+  ProductCategory,
+  ProductConditionsType,
+} from '../../../../core/constants/products-constants';
 import {LengthPipe} from '../../../../shared/pipes/length-pipe';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-products-table',
@@ -22,6 +28,7 @@ import {FormControl, ReactiveFormsModule} from '@angular/forms';
     MatSortModule,
     MatIconModule,
     MatButtonModule,
+    MatTooltipModule,
     DatePipe,
     CurrencyPipe,
     LengthPipe,
@@ -33,6 +40,7 @@ import {FormControl, ReactiveFormsModule} from '@angular/forms';
 export class ProductsTableComponent implements AfterViewInit {
 
   readonly categoryLabelMap = PRODUCT_CATEGORY_LABEL_MAP;
+  readonly conditionLabelMap = PRODUCT_CONDITION_LABEL_MAP;
   readonly dataSource = new MatTableDataSource<ProductListItem>([]);
   readonly filterControl = new FormControl('', {nonNullable: true});
 
@@ -72,7 +80,15 @@ export class ProductsTableComponent implements AfterViewInit {
     return this.categoryLabelMap[category];
   }
 
+  getConditionLabel(condition: ProductConditionsType): string {
+    return this.conditionLabelMap[condition];
+  }
+
   canManage(product: ProductListItem): boolean {
     return this.isAdmin || product.source === 'sandbox';
+  }
+
+  getSourceLabel(source: ProductListItem['source']): string {
+    return source === 'public' ? 'Демо' : 'Sandbox';
   }
 }

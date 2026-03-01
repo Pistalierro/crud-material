@@ -7,6 +7,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {
   PRODUCT_CATEGORIES,
   PRODUCT_CONDITIONS,
+  PRODUCT_CONDITION_LABEL_MAP,
   ProductCategory,
   ProductConditionsType
 } from '../../../../core/constants/products-constants';
@@ -30,7 +31,6 @@ export type ProductFormDialogResult =
   ownerUid: ProductListItem['ownerUid'];
 };
 
-
 @Component({
   selector: 'app-product-form-dialog',
   imports: [
@@ -53,9 +53,10 @@ export class ProductFormDialogComponent {
 
   readonly categories = PRODUCT_CATEGORIES;
   readonly productConditions: ProductConditionsType[] = PRODUCT_CONDITIONS;
+  readonly conditionLabelMap = PRODUCT_CONDITION_LABEL_MAP;
   readonly dialogData = inject<ProductFormDialogData | null>(MAT_DIALOG_DATA, {optional: true});
   readonly isEditMode = !!this.dialogData?.product;
-  readonly submitButtonLabel = this.isEditMode ? 'Обновить' : 'Сохранить';
+  readonly submitButtonLabel = this.isEditMode ? 'Оновити' : 'Зберегти';
   private readonly dialogRef = inject(MatDialogRef<ProductFormDialogComponent, ProductFormDialogResult>);
   private readonly fb = inject(FormBuilder);
   readonly form = this.fb.group({
@@ -83,6 +84,9 @@ export class ProductFormDialogComponent {
     });
   }
 
+  getConditionLabel(condition: ProductConditionsType): string {
+    return this.conditionLabelMap[condition];
+  }
 
   onSubmit(): void {
     if (this.form.invalid) {
@@ -111,11 +115,9 @@ export class ProductFormDialogComponent {
       return;
     }
 
-
     this.dialogRef.close({
       mode: 'create',
       payload: payload as CreateProductDto,
     });
   }
-
 }

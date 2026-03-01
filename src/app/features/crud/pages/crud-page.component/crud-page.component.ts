@@ -57,7 +57,7 @@ export class CrudPageComponent {
     this.productsFirestoreService.getProducts().pipe(
       catchError((error) => {
         console.error('Failed to load products:', error);
-        this.loadError.set('Не удалось загрузить товары.');
+        this.loadError.set('Не вдалося завантажити товари.');
         return of<ProductListItem[]>([]);
       }),
       finalize(() => this.isLoading.set(false)),
@@ -101,7 +101,7 @@ export class CrudPageComponent {
       await this.authSessionService.signInAsAdmin();
       await this.authSessionService.refreshAuthToken();
 
-      this.snackBar.open('Вход через Google выполнен', 'OK', {
+      this.snackBar.open('Вхід через Google виконано', 'OK', {
         duration: 2500,
         horizontalPosition: 'end',
         verticalPosition: 'top',
@@ -109,7 +109,7 @@ export class CrudPageComponent {
     } catch (error) {
       console.error('Failed to sign in as admin:', error);
 
-      this.snackBar.open('Не удалось войти через Google. Попробуй снова.', 'OK', {
+      this.snackBar.open('Не вдалося увійти через Google. Спробуй ще раз.', 'OK', {
         duration: 3500,
         horizontalPosition: 'end',
         verticalPosition: 'top',
@@ -126,7 +126,7 @@ export class CrudPageComponent {
     try {
       await this.productsFirestoreService.updateProduct(id, payload, source, ownerUid);
 
-      this.snackBar.open('Товар обновлён', 'OK', {
+      this.snackBar.open('Товар оновлено', 'OK', {
         duration: 2500,
         horizontalPosition: 'end',
         verticalPosition: 'top',
@@ -134,7 +134,7 @@ export class CrudPageComponent {
     } catch (error) {
       console.error('Failed to update product:', error);
 
-      this.snackBar.open('Не удалось обновить товар. Попробуй снова.', 'OK', {
+      this.snackBar.open('Не вдалося оновити товар. Спробуй ще раз.', 'OK', {
         duration: 3500,
         horizontalPosition: 'end',
         verticalPosition: 'top',
@@ -152,7 +152,7 @@ export class CrudPageComponent {
     try {
       await this.productsFirestoreService.addProduct(payload);
 
-      this.snackBar.open('Товар успешно добавлен', 'OK', {
+      this.snackBar.open('Товар успішно додано', 'OK', {
         duration: 2500,
         horizontalPosition: 'end',
         verticalPosition: 'top',
@@ -160,7 +160,7 @@ export class CrudPageComponent {
     } catch (error) {
       console.error('Failed to create product:', error);
 
-      this.snackBar.open('Не удалось сохранить товар. Попробуй снова.', 'OK', {
+      this.snackBar.open('Не вдалося зберегти товар. Спробуй ще раз.', 'OK', {
         duration: 3500,
         horizontalPosition: 'end',
         verticalPosition: 'top',
@@ -200,14 +200,14 @@ export class CrudPageComponent {
   private async performDelete(product: ProductListItem): Promise<void> {
     try {
       await this.productsFirestoreService.deleteProduct(product.id, product.source, product.ownerUid);
-      this.snackBar.open('Товар удалён', 'OK', {
+      this.snackBar.open('Товар видалено', 'OK', {
         duration: 2500,
         horizontalPosition: 'end',
         verticalPosition: 'top',
       });
     } catch (error) {
       console.error('Failed to delete product:', error);
-      this.snackBar.open('Не удалось удалить товар. Попробуй снова.', 'OK', {
+      this.snackBar.open('Не вдалося видалити товар. Спробуй ще раз.', 'OK', {
         duration: 3500,
         horizontalPosition: 'end',
         verticalPosition: 'top',

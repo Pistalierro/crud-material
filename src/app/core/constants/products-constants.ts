@@ -1,21 +1,26 @@
-import {Product} from '../models/product.model';
+import {ProductListItem} from '../models/product.model';
 
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number]['value'];
 export const PRODUCT_CATEGORIES = [
-  {value: 'computers', label: 'Компьютеры'},
-  {value: 'mobiles', label: 'Мобильные телефоны'},
-  {value: 'tablets', label: 'Планшеты'},
-  {value: 'monitors', label: 'Мониторы'},
+  {value: 'computers', label: 'Комп\'ютери'},
+  {value: 'mobiles', label: 'Мобільні телефони'},
+  {value: 'tablets', label: 'Планшети'},
+  {value: 'monitors', label: 'Монітори'},
   {value: 'laptops', label: 'Ноутбуки'},
-  {value: 'servers', label: 'Серверы'},
-  {value: 'office-equipment', label: 'Оргтехника'},
+  {value: 'servers', label: 'Сервери'},
+  {value: 'office-equipment', label: 'Оргтехніка'},
 ] as const;
 
-
-export type ProductConditionsType = 'Новый' | 'Б/у' | 'После ремонта'
+export type ProductConditionsType = 'Новый' | 'Б/у' | 'После ремонта';
 export const PRODUCT_CONDITIONS: ProductConditionsType[] = ['Новый', 'Б/у', 'После ремонта'];
 
-export const PRODUCT_TABLE_COLUMNS: Array<keyof Product | 'actions'> = [
+export const PRODUCT_CONDITION_LABEL_MAP: Record<ProductConditionsType, string> = {
+  'Новый': 'Новий',
+  'Б/у': 'Вживаний',
+  'После ремонта': 'Після ремонту',
+};
+
+export const PRODUCT_TABLE_COLUMNS: Array<keyof ProductListItem | 'actions'> = [
   'name',
   'category',
   'condition',
@@ -33,4 +38,3 @@ export const PRODUCT_CATEGORY_LABEL_MAP: Record<ProductCategory, string> =
     },
     {} as Record<ProductCategory, string>,
   );
-

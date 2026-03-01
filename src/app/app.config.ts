@@ -7,7 +7,8 @@ import {firebaseConfig} from '../environments/firebase.config.local';
 import {routes} from './app.routes';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {getAuth, provideAuth} from '@angular/fire/auth';
-
+import {MatPaginatorIntl} from '@angular/material/paginator';
+import {getPaginatorIntl} from './core/config/paginator-intl.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,5 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideNativeDateAdapter(),
     {provide: LOCALE_ID, useValue: 'uk-UA'},
+    {provide: MatPaginatorIntl, useFactory: getPaginatorIntl},
   ],
 };

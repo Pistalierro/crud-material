@@ -1,17 +1,17 @@
 <h2 class="product-dialog__title" mat-dialog-title>
-  {{ isEditMode ? 'Редактировать товар' : 'Добавить товар' }}
+  {{ isEditMode ? 'Редагувати товар' : 'Додати товар' }}
 </h2>
 
 <mat-dialog-content class="product-dialog__content">
   <form (ngSubmit)="onSubmit()" [formGroup]="form" class="product-dialog__form" id="product-dialog-form">
     <mat-form-field appearance="outline">
-      <mat-label>Наименование товара</mat-label>
+      <mat-label>Назва товару</mat-label>
       <input formControlName="name" matInput/>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Категория товара</mat-label>
-      <mat-select formControlName="category" placeholder="Выберите категорию товара">
+      <mat-label>Категорія товару</mat-label>
+      <mat-select formControlName="category" placeholder="Оберіть категорію товару">
         @for (category of categories; track category.value) {
           <mat-option [value]="category.value">{{ category.label }}</mat-option>
         }
@@ -19,42 +19,42 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Выберите дату</mat-label>
+      <mat-label>Оберіть дату</mat-label>
       <input [matDatepicker]="picker" formControlName="startDate" matInput/>
       <mat-datepicker-toggle [for]="picker" matIconSuffix></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
     <div class="product-dialog__radio-wrap">
-      <p class="product-dialog__radio-label">Состояние товара:</p>
+      <p class="product-dialog__radio-label">Стан товару:</p>
       <mat-radio-group class="product-dialog__radio-group" formControlName="condition">
         @for (condition of productConditions; track condition) {
-          <mat-radio-button [value]="condition">{{ condition }}</mat-radio-button>
+          <mat-radio-button [value]="condition">{{ getConditionLabel(condition) }}</mat-radio-button>
         }
       </mat-radio-group>
     </div>
 
     <mat-form-field appearance="outline">
-      <mat-label>Цена, ₴</mat-label>
+      <mat-label>Ціна, ₴</mat-label>
       <input formControlName="price" matInput required type="number"/>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Дополнительно</mat-label>
+      <mat-label>Додатково</mat-label>
       <textarea
         cdkAutosizeMaxRows="5"
         cdkAutosizeMinRows="1"
         cdkTextareaAutosize
         formControlName="description"
         matInput
-        placeholder="Описание товара..."
+        placeholder="Опис товару..."
       ></textarea>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end" class="product-dialog__actions">
-  <button mat-dialog-close mat-stroked-button type="button">Отменить</button>
+  <button mat-dialog-close mat-stroked-button type="button">Скасувати</button>
   <button
     [disabled]="form.invalid"
     color="primary"
