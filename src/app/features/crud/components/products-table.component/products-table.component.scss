@@ -6,6 +6,21 @@
     margin: 12px 0;
   }
 
+  &__info {
+    margin: 0 0 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgb(12 94 167 / 8%);
+    border: 1px solid rgb(12 94 167 / 14%);
+  }
+
+  &__info-text {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #35506f;
+  }
+
   &__surface {
     border-radius: 12px;
     overflow: hidden;
@@ -90,6 +105,15 @@
   .products-table {
     &__filter {
       margin: 8px 0;
+    }
+
+    &__info {
+      margin-bottom: 8px;
+      padding: 8px 10px;
+    }
+
+    &__info-text {
+      font-size: 12px;
     }
 
     &__table {

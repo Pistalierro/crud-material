@@ -44,3 +44,8 @@ Thumbs.db
 
 # Firebase local secrets
 /src/environments/firebase.config.local.ts
+
+# Firebase admin local secrets
+/service-account*.json
+/scripts/*.local.*
+

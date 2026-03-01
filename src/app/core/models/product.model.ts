@@ -9,3 +9,11 @@ export interface Product {
   startDate: Date;
   description: string;
 }
+
+export type ProductSource = 'public' | 'sandbox';
+
+export interface ProductListItem extends Product {
+  source: ProductSource;
+  ownerUid: string | null;
+}
+

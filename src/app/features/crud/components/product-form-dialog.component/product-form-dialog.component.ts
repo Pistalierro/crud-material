@@ -14,15 +14,21 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatButtonModule} from '@angular/material/button';
 import {CreateProductDto, UpdateProductDto} from '../../../../core/models/product-dto.model';
-import {Product} from '../../../../core/models/product.model';
+import {ProductListItem} from '../../../../core/models/product.model';
 
 export interface ProductFormDialogData {
-  product: Product;
+  product: ProductListItem;
 }
 
 export type ProductFormDialogResult =
   | { mode: 'create'; payload: CreateProductDto }
-  | { mode: 'edit'; id: string; payload: UpdateProductDto };
+  | {
+  mode: 'edit';
+  id: string;
+  payload: UpdateProductDto;
+  source: ProductListItem['source'];
+  ownerUid: ProductListItem['ownerUid'];
+};
 
 
 @Component({
@@ -99,9 +105,12 @@ export class ProductFormDialogComponent {
         mode: 'edit',
         id: product.id,
         payload,
+        source: product.source,
+        ownerUid: product.ownerUid,
       });
       return;
     }
+
 
     this.dialogRef.close({
       mode: 'create',

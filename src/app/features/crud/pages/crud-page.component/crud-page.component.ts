@@ -11,7 +11,7 @@ import {
 import {MatCardModule} from '@angular/material/card';
 import {CreateProductDto, UpdateProductDto} from '../../../../core/models/product-dto.model';
 import {ProductsFirestoreService} from '../../../../core/services/products-firestore.service';
-import {Product} from '../../../../core/models/product.model';
+import {ProductListItem} from '../../../../core/models/product.model';
 import {PRODUCT_TABLE_COLUMNS} from '../../../../core/constants/products-constants';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -22,6 +22,7 @@ import {
 } from '../../components/delete-confirm-dialog.component/delete-confirm-dialog.component';
 import {catchError, finalize, of} from 'rxjs';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {AuthSessionService} from '../../../../core/services/auth-session.service';
 
 @Component({
   selector: 'app-crud-page',
@@ -41,10 +42,15 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 export class CrudPageComponent {
 
   readonly dialog = inject(MatDialog);
+  readonly authSessionService = inject(AuthSessionService);
   readonly displayedColumns = PRODUCT_TABLE_COLUMNS;
   readonly isSaving = signal(false);
   readonly isLoading = signal(false);
   readonly loadError = signal<string | null>(null);
+  readonly isAdmin = toSignal(
+    this.authSessionService.adminState$(),
+    {initialValue: false},
+  );
   private readonly snackBar = inject(MatSnackBar);
   private readonly productsFirestoreService = inject(ProductsFirestoreService);
   readonly products = toSignal(
@@ -52,11 +58,11 @@ export class CrudPageComponent {
       catchError((error) => {
         console.error('Failed to load products:', error);
         this.loadError.set('Не удалось загрузить товары.');
-        return of([]);
+        return of<ProductListItem[]>([]);
       }),
       finalize(() => this.isLoading.set(false)),
     ),
-    {initialValue: []},
+    {initialValue: [] as ProductListItem[]},
   );
 
   openDialog(): void {
@@ -64,12 +70,12 @@ export class CrudPageComponent {
     dialogRef.afterClosed().subscribe((result) => this.handleDialogResult(result));
   }
 
-  onEdit(product: Product): void {
+  onEdit(product: ProductListItem): void {
     const dialogRef = this.openProductDialog({product});
     dialogRef.afterClosed().subscribe((result) => this.handleDialogResult(result));
   }
 
-  onDelete(product: Product): void {
+  onDelete(product: ProductListItem): void {
     const dialogRef = this.dialog.open<DeleteConfirmDialogComponent, DeleteConfirmDialogData, boolean>(
       DeleteConfirmDialogComponent,
       {
@@ -90,9 +96,35 @@ export class CrudPageComponent {
     });
   }
 
-  private async handleUpdate(id: string, payload: UpdateProductDto): Promise<void> {
+  async onAdminLogin(): Promise<void> {
     try {
-      await this.productsFirestoreService.updateProduct(id, payload);
+      await this.authSessionService.signInAsAdmin();
+      await this.authSessionService.refreshAuthToken();
+
+      this.snackBar.open('Вход через Google выполнен', 'OK', {
+        duration: 2500,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      });
+    } catch (error) {
+      console.error('Failed to sign in as admin:', error);
+
+      this.snackBar.open('Не удалось войти через Google. Попробуй снова.', 'OK', {
+        duration: 3500,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+      });
+    }
+  }
+
+  private async handleUpdate(
+    id: string,
+    payload: UpdateProductDto,
+    source: ProductListItem['source'],
+    ownerUid: ProductListItem['ownerUid'],
+  ): Promise<void> {
+    try {
+      await this.productsFirestoreService.updateProduct(id, payload, source, ownerUid);
 
       this.snackBar.open('Товар обновлён', 'OK', {
         duration: 2500,
@@ -161,12 +193,13 @@ export class CrudPageComponent {
       void this.handleCreate(result.payload);
       return;
     }
-    void this.handleUpdate(result.id, result.payload);
+
+    void this.handleUpdate(result.id, result.payload, result.source, result.ownerUid);
   }
 
-  private async performDelete(product: Product): Promise<void> {
+  private async performDelete(product: ProductListItem): Promise<void> {
     try {
-      await this.productsFirestoreService.deleteProduct(product.id);
+      await this.productsFirestoreService.deleteProduct(product.id, product.source, product.ownerUid);
       this.snackBar.open('Товар удалён', 'OK', {
         duration: 2500,
         horizontalPosition: 'end',

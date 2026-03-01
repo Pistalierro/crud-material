@@ -1,8 +1,40 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /products/{document=**} {
-      allow read, write: if true;
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function validSandboxTtl() {
+      return request.resource.data.expiresAt is timestamp
+        && request.resource.data.expiresAt <= request.time + duration.value(6, "h");
+    }
+
+    match /catalogPublic/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /users/{userId}/sandboxProducts/{productId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if (isOwner(userId) && validSandboxTtl()) || isAdmin();
+      allow update, delete: if isOwner(userId) || isAdmin();
+    }
+
+    match /{path=**}/sandboxProducts/{productId} {
+      allow read: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

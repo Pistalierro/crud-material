@@ -5,6 +5,12 @@
     <input [formControl]="filterControl" matInput placeholder="Поиск по товарам">
   </mat-form-field>
 
+  <div class="products-table__info">
+    <p class="products-table__info-text">
+      Демо-товары доступны только для просмотра. Вы можете добавлять и редактировать только свои sandbox-записи.
+    </p>
+  </div>
+
   <div class="products-table__surface mat-elevation-z8">
     <div class="products-table__scroll">
       <table [dataSource]="dataSource" class="products-table__table" mat-table matSort>
@@ -44,6 +50,7 @@
             <div class="products-table__actions">
               <button
                 (click)="onEdit(product)"
+                [disabled]="!canManage(product)"
                 aria-label="Редактировать товар"
                 class="products-table__action-btn products-table__action-btn--edit"
                 mat-icon-button
@@ -51,8 +58,10 @@
               >
                 <mat-icon>edit</mat-icon>
               </button>
+
               <button
                 (click)="onDelete(product)"
+                [disabled]="!canManage(product)"
                 aria-label="Удалить товар"
                 class="products-table__action-btn products-table__action-btn--delete"
                 mat-icon-button
@@ -77,6 +86,7 @@
 
     <mat-paginator
       [pageSizeOptions]="[5, 10, 25, 100]"
+      [pageSize]="10"
       aria-label="Пагинация товаров"
       class="products-table__paginator"
     ></mat-paginator>

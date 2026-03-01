@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {Product} from '../../../../core/models/product.model';
+import {ProductListItem} from '../../../../core/models/product.model';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -33,16 +33,19 @@ import {FormControl, ReactiveFormsModule} from '@angular/forms';
 export class ProductsTableComponent implements AfterViewInit {
 
   readonly categoryLabelMap = PRODUCT_CATEGORY_LABEL_MAP;
-  readonly dataSource = new MatTableDataSource<Product>([]);
+  readonly dataSource = new MatTableDataSource<ProductListItem>([]);
   readonly filterControl = new FormControl('', {nonNullable: true});
-  @Input({required: true}) displayedColumns: Array<keyof Product | 'actions'> = [];
-  @Output() edit = new EventEmitter<Product>();
-  @Output() delete = new EventEmitter<Product>();
+
+  @Input({required: true}) displayedColumns: Array<keyof ProductListItem | 'actions'> = [];
+  @Input() isAdmin = false;
+
+  @Output() edit = new EventEmitter<ProductListItem>();
+  @Output() delete = new EventEmitter<ProductListItem>();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  @Input({required: true}) set products(value: Product[]) {
+  @Input({required: true}) set products(value: ProductListItem[]) {
     this.dataSource.data = value;
   }
 
@@ -57,15 +60,19 @@ export class ProductsTableComponent implements AfterViewInit {
     });
   }
 
-  onEdit(product: Product): void {
+  onEdit(product: ProductListItem): void {
     this.edit.emit(product);
   }
 
-  onDelete(product: Product): void {
+  onDelete(product: ProductListItem): void {
     this.delete.emit(product);
   }
 
   getCategoryLabel(category: ProductCategory): string {
     return this.categoryLabelMap[category];
+  }
+
+  canManage(product: ProductListItem): boolean {
+    return this.isAdmin || product.source === 'sandbox';
   }
 }

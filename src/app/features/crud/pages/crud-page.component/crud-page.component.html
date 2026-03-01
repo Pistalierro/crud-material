@@ -5,6 +5,16 @@
 
   <span class="crud-page__spacer"></span>
 
+  <!--  <button-->
+  <!--    (click)="onAdminLogin()"-->
+  <!--    class="crud-page__action-btn"-->
+  <!--    mat-stroked-button-->
+  <!--    type="button"-->
+  <!--  >-->
+  <!--    <mat-icon>admin_panel_settings</mat-icon>-->
+  <!--    Войти как админ-->
+  <!--  </button>-->
+
   <button
     (click)="openDialog()"
     [disabled]="isSaving()"
@@ -34,6 +44,7 @@
         (edit)="onEdit($event)"
         [displayedColumns]="displayedColumns"
         [products]="products()"
+        [isAdmin]="isAdmin()"
       ></app-products-table>
     }
   </mat-card>
